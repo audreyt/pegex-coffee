@@ -170,6 +170,7 @@ class Parser
     match = (captures[i] for i in [1..numCaptures])
     match = [ match ] if numCaptures > 1
     @position = finish
+    return match
 
   match_all = (list, parent) ->
     pos = @position
@@ -194,6 +195,7 @@ class Parser
 
   match_err = (error) ->
     @throwError error
+    return false
 
   trace = (action) ->
     indent = /^try_/.test(action)
@@ -209,6 +211,7 @@ class Parser
     out += ' ' for [action.length..30]
     out += if indent then " >#{snippet}<\n" else "\n"
     console.log out
+    return
 
   throwError = (msg) ->
     line = @buffer.substr(0, @position).match(/\n/g).length + 1
