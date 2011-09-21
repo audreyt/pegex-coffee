@@ -13,21 +13,21 @@ class Parser
     ) ->
 
   parse: (@input, startRule) ->
-    throw "Usage: parse(input, [startRule]" unless @input
+    throw "Usage: parse(input, [startRule])" unless @input
     throw "No 'grammar', can't parse" unless @grammar
     throw "No 'receiver', can't parse" unless @receiver
 
-    @input = Input.new(@input).open() if typeof @input is 'string'
-    @buffer = @input.read()
     @grammar = eval("new #{@grammar}") if typeof @grammar is 'string'
     @receiver = eval("new #{@receiver}") if typeof @receiver is 'string'
+    @input = Input.new(@input).open() if typeof @input is 'string'
+    @buffer = @input.read()
 
     startRule ||= (
       @grammar.tree['+top'] or
       (if @grammar.tree.TOP then 'TOP' else null)
     )
 
-    throw "No starting rule for Pegex::Parser::parse" unless startRule
+    throw "No starting rule for Parser.parse" unless startRule
 
     @receiver.parser = @
     # TODO: require('weakref').weaken(@receiver.parser)
